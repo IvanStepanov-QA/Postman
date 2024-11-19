@@ -1,100 +1,140 @@
-## ДЗ_3 Postman
-1) необходимо залогиниться  
-POST  
-http://162.55.220.72:5005/login  
-login : str (кроме /)  
-password : str  
+# Postman.
+__HW_1__
 
-Приходящий токен необходимо передать во все остальные запросы.  
+_Создать запросы в Postman._
 
-2) http://162.55.220.72:5005/user_info  
-req. (RAW JSON)  
-POST  
-age: int  
-salary: int  
-name: str  
-auth_token  
+- Protocol: http
+- IP: 162.55.220.72
+- Port: 5005
 
-resp.  
-> {'start_qa_salary':salary,  
- 'qa_salary_after_6_months': salary * 2,  
- 'qa_salary_after_12_months': salary * 2.9,  
- 'person': {'u_name':[user_name, salary, age],  
-                                'u_age':age,  
-                                'u_salary_1.5_year': salary * 4}  
-                                }
+__EP_1__
+- Method: GET
+- EndPoint: /get_method
+- request url params: 
+ - name: str
+ - age: int
 
-Тесты:
-> 1) Статус код 200  
-2) Проверка структуры json в ответе.  
-3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.  
-4) Достать значение из поля 'u_salary_1.5_year' и передать в поле salary запроса http://162.55.220.72:5005/get_test_user  
+- response: 
 
-===================
+		[
+  		“Andrey”,
+  		“43”
+		]
 
-3) http://162.55.220.72:5005/new_data
-req.
-POST
-age: int
-salary: int
-name: str
-auth_token
+==================
 
-Resp.
-{'name':name,
-  'age': int(age),
-  'salary': [salary, str(salary*2), str(salary*3)]}
+__EP_2__
+- Method: POST
+- EndPoint: /user_info_3
+- request form data: 
+ - name: str
+ - age: int
+ - salary: int
 
-Тесты:
-1) Статус код 200
-2) Проверка структуры json в ответе.
-3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.
-4) проверить, что 2-й элемент массива salary больше 1-го и 0-го
-===================
+- response: 
 
-4) http://162.55.220.72:5005/test_pet_info
-req.
-POST
-age: int
-weight: int
-name: str
-auth_token
+		{'name': ""Andrey"",
+          'age': 43,
+          'salary': 1000,
+          'family': {'children': [['Alex', 24], ['Kate', 12]],
+                     'u_salary_1_5_year': salary * 4}}
 
 
-Resp.
-{'name': name,
- 'age': age,
- 'daily_food':weight * 0.012,
- 'daily_sleep': weight * 2.5}
+==================
+
+__EP_3__
+- Method: GET
+- EndPoint: /object_info_1
+- request url params: 
+ - name: str
+ - age: int
+ - weight: int
+
+        response: 
+        {'name': name,
+                  'age': age,
+                  'daily_food': weight * 0.012,
+                  'daily_sleep': weight * 2.5}
 
 
-Тесты:
-1) Статус код 200
-2) Проверка структуры json в ответе.
-3) В ответе указаны коэффициенты умножения weight, напишите тесты по проверке правильности результата перемножения на коэффициент.
+==================
 
-===================
+__EP_4__
+- Method: GET
+- EndPoint: /object_info_2
+- request url params: 
+ - name: str
+ - age: int
+ - salary: int
 
-5) http://162.55.220.72:5005/get_test_user
-req.
-POST
-age: int
-salary: int
-name: str
-auth_token
+        response: 
+        {'start_qa_salary': salary,
+                  'qa_salary_after_6_months': salary * 2,
+                  'qa_salary_after_12_months': salary * 2.7,
+                  'qa_salary_after_1.5_year': salary * 3.3,
+                  'qa_salary_after_3.5_years': salary * 3.8,
+                  'person': {'u_name': [user_name, salary, age],
+                             'u_age': age,
+                             'u_salary_5_years': salary * 4.2}
+                  }
 
-Resp.
-{'name': name,
- 'age':age,
- 'salary': salary,
- 'family':{'children':[['Alex', 24],['Kate', 12]],
- 'u_salary_1.5_year': salary * 4}
-  }
 
-Тесты:
-1) Статус код 200
-2) Проверка структуры json в ответе.
-3) Проверить что занчение поля name = значению переменной name из окружения
-4) Проверить что занчение поля age в ответе соответсвует отправленному в запросе значению поля age
+==================
 
-===================
+__EP_5__
+- Method: GET
+- EndPoint: /object_info_3
+- request url params: 
+ - name: str
+ - age: int
+ - salary: int
+
+        response: 
+        {'name': name,
+                  'age': age,
+                  'salary': salary,
+                  'family': {'children': [['Alex', 24], ['Kate', 12]],
+                             'pets': {'cat':{'name':'Sunny',
+                                             'age': 3},
+                                      'dog':{'name':'Luky',
+                                             'age': 4}},
+                             'u_salary_1_5_year': salary * 4}
+                  }
+
+
+==================
+
+__EP_6__
+- Method: GET
+- EndPoint: /object_info_4
+- request url params: 
+ - name: str
+ - age: int
+ - salary: int
+
+        response: 
+        {'name': name,
+                  'age': int(age),
+                  'salary': [salary, str(salary * 2), str(salary * 3)]}
+
+
+==================
+
+__EP_7__
+- Method: POST
+- EndPoint: /user_info_2
+- request form data: 
+ - name: str
+ - age: int
+ - salary: int
+
+        response: 
+        {'start_qa_salary': salary,
+                  'qa_salary_after_6_months': salary * 2,
+                  'qa_salary_after_12_months': salary * 2.7,
+                  'qa_salary_after_1.5_year': salary * 3.3,
+                  'qa_salary_after_3.5_years': salary * 3.8,
+                  'person': {'u_name': [user_name, salary, age],
+                             'u_age': age,
+                             'u_salary_5_years': salary * 4.2}
+                  }
