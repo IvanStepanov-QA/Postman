@@ -1,0 +1,399 @@
+{
+	"info": {
+		"_postman_id": "1b049978-1e2e-4d02-8980-5d5dd9a755c6",
+		"name": "Homework_3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39567940"
+	},
+	"item": [
+		{
+			"name": "№1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonResp = pm.response.json();\r",
+							"pm.environment.set(\"token\", jsonResp.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "Ivan",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Stiv",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/login",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "№2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"let jsonResp = pm.response.json();\r",
+							"const bodyRaw = pm.request.body.raw;\r",
+							"let requestBody = JSON.parse(bodyRaw);\r",
+							"console.log(jsonResp);\r",
+							"const expectedStructure = {\r",
+							"    'person': {\r",
+							"        'u_name': [requestBody.name, requestBody.salary, requestBody.age],\r",
+							"        'u_age': requestBody.age,\r",
+							"        'u_salary_1_5_year': requestBody.salary * 4\r",
+							"    },\r",
+							"    'qa_salary_after_12_months': requestBody.salary * 2.9,\r",
+							"    'qa_salary_after_6_months': requestBody.salary * 2,\r",
+							"    'start_qa_salary': requestBody.salary\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Check response structure\", function () {\r",
+							"    pm.expect(jsonResp).to.eql(expectedStructure);\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"u_salary_1_5_year\", jsonResp.person[\"u_salary_1_5_year\"]);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"age\": 25,\r\n    \"salary\" : 5000,\r\n    \"name\" : \"John\",\r\n    \"auth_token\" :  \"{{token}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "№3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"let jsonResp = pm.response.json();\r",
+							"const jsonReq = pm.request.body.formdata.toObject();\r",
+							"// console.log(bodyRaw)\r",
+							"\r",
+							"pm.test(\"Check response structure\", function () {\r",
+							"    pm.expect(jsonResp).to.include.keys(\"name\",\"salary\",\"age\");\r",
+							"});\r",
+							"pm.test(\"Check salary multiplications\", function () {\r",
+							"    pm.expect(+jsonResp.salary[0]).to.equal(+jsonReq.salary);\r",
+							"    pm.expect(+jsonResp.salary[1]).to.equal(+jsonReq.salary * 2);\r",
+							"    pm.expect(+jsonResp.salary[2]).to.equal(+jsonReq.salary * 3);\r",
+							"});\r",
+							"pm.test(\"Check 3rd salary\", function () {\r",
+							"    pm.expect(+jsonResp.salary[2]).to.be.greaterThan(+jsonResp.salary[0]);\r",
+							"    pm.expect(+jsonResp.salary[2]).to.be.greaterThan(+jsonResp.salary[1]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "35",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "50000",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Ivan",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/new_data",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"new_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "№4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"let jsonResp = pm.response.json();\r",
+							"const jsonReq = pm.request.body.formdata.toObject();\r",
+							"\r",
+							"pm.test(\"Check response structure\", function () {\r",
+							"    pm.expect(jsonResp).to.include.keys(\"age\",\"daily_food\",\"daily_sleep\",\"name\");\r",
+							"    pm.expect(Number.isInteger(jsonResp.age)).to.be.true; \r",
+							"    pm.expect(typeof jsonResp.daily_food).to.equal('number');\r",
+							"    pm.expect(typeof jsonResp.daily_sleep).to.equal('number'); \r",
+							"    pm.expect(typeof jsonResp.name).to.equal('string'); \r",
+							"});\r",
+							"pm.test(\"Check multiplications\", function () {\r",
+							"    pm.expect(+jsonResp.daily_food).to.equal(+jsonReq.weight * 0.012);\r",
+							"    pm.expect(+jsonResp.daily_sleep).to.equal(+jsonReq.weight * 2.5);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "26",
+							"type": "text"
+						},
+						{
+							"key": "weight",
+							"value": "75",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Tommy",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/test_pet_info",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"test_pet_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "№5",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"let jsonResp = pm.response.json();\r",
+							"const jsonReq = pm.request.body.formdata.toObject();\r",
+							"\r",
+							"var schema = {  \r",
+							"    \"type\": \"object\",  \r",
+							"    \"required\": [  \r",
+							"        \"name\",  \r",
+							"        \"age\",  \r",
+							"        \"salary\",  \r",
+							"        \"family\"  \r",
+							"    ],  \r",
+							"    \"properties\": {  \r",
+							"        \"name\": {  \r",
+							"            \"type\": \"string\"  \r",
+							"        },  \r",
+							"        \"age\": {  \r",
+							"            \"type\":  \"string\"  \r",
+							"        },  \r",
+							"        \"salary\": {  \r",
+							"            \"type\": \"integer\"  \r",
+							"        },  \r",
+							"        \"family\": {  \r",
+							"            \"type\": \"object\",  \r",
+							"            \"required\": [  \r",
+							"                \"children\",  \r",
+							"                \"u_salary_1_5_year\"   \r",
+							"            ],  \r",
+							"            \"properties\": {  \r",
+							"                \"children\": {  \r",
+							"                    \"type\": \"array\",  \r",
+							"                    \"items\": {  \r",
+							"                        \"type\": \"array\",  \r",
+							"                        \"items\": [  \r",
+							"                            { \"type\": \"string\" },  \r",
+							"                            { \"type\": \"integer\" }  \r",
+							"                        ],  \r",
+							"                    }  \r",
+							"                },  \r",
+							"                \"u_salary_1_5_year\": {  \r",
+							"                    \"type\": \"integer\"  \r",
+							"                }  \r",
+							"            }  \r",
+							"        }  \r",
+							"    }  \r",
+							"};  \r",
+							"\r",
+							"pm.test(\"Check json schema\", function() {  \r",
+							"    pm.response.to.jsonSchema(schema);  \r",
+							"});  \r",
+							"pm.test(\"Check Name\", function() {  \r",
+							"    pm.expect(jsonResp.name).to.equal(pm.environment.get(\"name\"));  \r",
+							"});  \r",
+							"pm.test(\"Check Age\", function() {  \r",
+							"    pm.expect(jsonResp.age).to.equal(jsonReq.age);  \r",
+							"});  \r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "33",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "200",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/get_test_user",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"get_test_user"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
