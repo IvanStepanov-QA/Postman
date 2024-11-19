@@ -14,13 +14,6 @@ __EP_1__
  - name: str
  - age: int
 
-- response: 
-
-		[
-  		“Andrey”,
-  		“43”
-		]
-
 ==================
 
 __EP_2__
@@ -33,9 +26,9 @@ __EP_2__
 
 - response: 
 
-		{'name': ""Andrey"",
-          'age': 43,
-          'salary': 1000,
+		{'name': name,
+          'age': age,
+          'salary': salary,
           'family': {'children': [['Alex', 24], ['Kate', 12]],
                      'u_salary_1_5_year': salary * 4}}
 
